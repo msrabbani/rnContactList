@@ -1,30 +1,52 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Alert} from 'react-native';
 import styled from 'styled-components/native';
+import {Loading, ModalForm} from '../components';
 
 function DetailContact({navigation, route}) {
-  const {id, firstName, lastName, age, photo} = route.params.data;
+  const [modalAddVisible, setModalAddVisible] = useState(false);
+  const {id} = route.params.data;
+  const [dataContact, setContact] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const defaultImg = require('../assets/images/dp_default.jpeg');
 
   const apiDeleteContact = async (i) => {
-    console.log('i', i);
+    console.log(i, 'delete');
     await fetch('https://simple-contact-crud.herokuapp.com/contact/' + i, {
       method: 'DELETE',
       headers: {'Content-Type': 'application/json'},
     })
       .then((res) => res.json()) // or res.json()
       .then((res) => {
-        console.log(res, 'ressse');
         if (res.message == 'contact deleted') {
           Alert.alert('Contact has been delete!', [
-            {
-              text: 'Cancel',
-              style: 'cancel',
-            },
             {text: 'OK', onPress: () => navigation.navigate('ContactList')},
           ]);
         } else {
           Alert.alert('Oops!', 'Please try again later!', [
+            {text: 'OK', onPress: () => navigation.navigate('ContactList')},
+          ]);
+        }
+      });
+  };
+
+  const apiGetContact = async (id) => {
+    console.log(id, 'yeah');
+    setIsLoading(true);
+    await fetch('https://simple-contact-crud.herokuapp.com/contact/' + id, {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'},
+    })
+      .then((res) => res.json()) // or res.json()
+      .then((res) => {
+        if (res.message == 'Get Contact by id') {
+          console.log('ok');
+          setIsLoading(false);
+          setContact(res.data);
+        } else {
+          console.log('ops');
+          setIsLoading(false);
+          Alert.alert('Oops!', res.message, [
             {text: 'OK', onPress: () => navigation.navigate('ContactList')},
           ]);
         }
@@ -46,28 +68,38 @@ function DetailContact({navigation, route}) {
     );
   };
 
+  useEffect(() => {
+    apiGetContact(id);
+  }, []);
+  console.log(isLoading, 'isloadiiiing');
+
   return (
     <Container>
+      {isLoading && <Loading />}
       <Header />
-      <ImageStyled source={photo == 'N/A' ? defaultImg : {uri: photo}} />
+      <ImageStyled
+        source={
+          dataContact.photo == 'N/A' || !dataContact.photo
+            ? defaultImg
+            : {uri: dataContact.photo}
+        }
+      />
       <Body>
         <TextStyled>
-          {firstName} {lastName}
+          {dataContact.firstName} {dataContact.lastName}
         </TextStyled>
-        {/* <TextStyled>{id}</TextStyled> */}
         <DetailWrapper>
           <ContactInfo>
             <TextDetail>First Name </TextDetail>
-            <TextDetailValue>: {firstName}</TextDetailValue>
-            {/* <TextDetailValue>sdasdsadasdfaefdasdsadasd</TextDetailValue> */}
+            <TextDetailValue>: {dataContact.firstName}</TextDetailValue>
           </ContactInfo>
           <ContactInfo>
             <TextDetail>Last Name </TextDetail>
-            <TextDetailValue>: {lastName}</TextDetailValue>
+            <TextDetailValue>: {dataContact.lastName}</TextDetailValue>
           </ContactInfo>
           <ContactInfo>
             <TextDetail>Age </TextDetail>
-            <TextDetailValue>: {age}</TextDetailValue>
+            <TextDetailValue>: {dataContact.age}</TextDetailValue>
           </ContactInfo>
         </DetailWrapper>
       </Body>
@@ -75,13 +107,19 @@ function DetailContact({navigation, route}) {
         <ButtonStyled
           activeOpacity={0.3}
           underlayColor="#BDC3C7"
-          onPress={() => console.log('press edit')}>
+          onPress={() => setModalAddVisible(!modalAddVisible)}>
           <ButtonText>{'Edit'}</ButtonText>
         </ButtonStyled>
         <ButtonStyled
           activeOpacity={0.3}
           underlayColor="#BDC3C7"
-          onPress={() => onPressDelete(id, firstName, lastName)}>
+          onPress={() =>
+            onPressDelete(
+              dataContact.id,
+              dataContact.firstName,
+              dataContact.lastName,
+            )
+          }>
           <ButtonText>{'Delete'}</ButtonText>
         </ButtonStyled>
         <ButtonStyled
@@ -91,6 +129,14 @@ function DetailContact({navigation, route}) {
           <ButtonText>{'Close'}</ButtonText>
         </ButtonStyled>
       </Footer>
+      <ModalForm
+        visible={modalAddVisible}
+        data={dataContact}
+        onBtnClose={() => {
+          setModalAddVisible(!modalAddVisible);
+        }}
+        updateSuccess={() => apiGetContact(id)}
+      />
     </Container>
   );
 }

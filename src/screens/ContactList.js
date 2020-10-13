@@ -12,9 +12,9 @@ function ContactList(props) {
   const [contacts, setContact] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [modalAddVisible, setModalAddVisible] = useState(false);
-  console.log('contacts', contacts);
+  console.log(contacts, 'contacts');
 
-  const getApiContacts = async () => {
+  const apiGetContacts = async () => {
     setIsLoading(true);
     await fetch('https://simple-contact-crud.herokuapp.com/contact')
       .then((res) => res.json())
@@ -29,7 +29,7 @@ function ContactList(props) {
   };
 
   useEffect(() => {
-    setTimeout(getApiContacts, 500);
+    setTimeout(apiGetContacts, 500);
   }, []);
   return (
     <Container>
@@ -49,7 +49,7 @@ function ContactList(props) {
         }}
         updateSuccess={() =>
           setTimeout(() => {
-            getApiContacts();
+            apiGetContacts();
           }, 500)
         }
       />

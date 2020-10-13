@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, FlatList, Platform} from 'react-native';
+import React from 'react';
+import {FlatList} from 'react-native';
 import styled from 'styled-components/native';
 
 export default function ItemList(props) {

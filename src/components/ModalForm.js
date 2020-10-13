@@ -7,8 +7,9 @@ const width = Dimensions.get('screen').width;
 export default function ModalForm(props) {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [age, setAge] = useState(0);
+  const [age, setAge] = useState();
   const [photo, setPhoto] = useState('');
+
   const postApiContacts = async (firstName, lastName, age, photo) => {
     const dataContact = {
       firstName,
@@ -17,7 +18,6 @@ export default function ModalForm(props) {
       photo:
         'http://vignette1.wikia.nocookie.net/lotr/images/6/68/Bilbo_baggins.jpg/revision/latest?cb=20130202022550',
     };
-    // props.setIsLoading(true);
     await fetch('https://simple-contact-crud.herokuapp.com/contact', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
@@ -38,6 +38,43 @@ export default function ModalForm(props) {
       })
       .catch((err) => console.error(err));
   };
+
+  const updateApiContacts = async (id, firstName, lastName, age, photo) => {
+    const dataContact = {
+      firstName: firstName || props.data.firstName,
+      lastName: lastName || props.data.firstName,
+      age: Number(age) || props.data.age,
+      photo:
+        'http://vignette1.wikia.nocookie.net/lotr/images/6/68/Bilbo_baggins.jpg/revision/latest?cb=20130202022550',
+    };
+    await fetch('https://simple-contact-crud.herokuapp.com/contact/' + id, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(dataContact),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.message == 'Contact edited') {
+          setFirstName('');
+          setLastName('');
+          setAge('');
+          setPhoto('');
+          props.onBtnClose();
+        } else {
+          alert(data.message);
+        }
+      })
+      .catch((err) => console.error(err));
+  };
+
+  useEffect(() => {
+    if (props && props.data !== undefined) {
+      setFirstName(props.data.firstName);
+      setLastName(props.data.lastName);
+      setAge(props.data.age);
+      setPhoto(props.data.photo);
+    }
+  }, [props.data]);
 
   return (
     <ModalStyled
@@ -71,7 +108,7 @@ export default function ModalForm(props) {
             <InputContainer>
               <Title>Age</Title>
               <TextInputStyledAge
-                value={age}
+                value={age && age.toString()}
                 onChangeText={(text) => setAge(text)}
                 keyboardType={'number-pad'}
               />
@@ -90,9 +127,20 @@ export default function ModalForm(props) {
               <ButtonStyled
                 activeOpacity={0.3}
                 underlayColor="darkgrey"
-                onPress={() =>
-                  postApiContacts(firstName, lastName, age, photo)
-                }>
+                onPress={() => {
+                  if (props && props.data) {
+                    console.log('masukzzzzz');
+
+                    updateApiContacts(
+                      props.data.id,
+                      firstName,
+                      lastName,
+                      age,
+                      photo,
+                    );
+                  }
+                  postApiContacts(firstName, lastName, age, photo);
+                }}>
                 <ButtonText>{props.btnCancelText || 'Save'}</ButtonText>
               </ButtonStyled>
             </FooterWrapper>
@@ -131,26 +179,22 @@ const TextInputStyled = styled.TextInput`
   box-shadow: 0px 3px 6px #00000020;
   align-items: center;
 `;
-
 const TextInputStyledAge = styled(TextInputStyled)`
   width: 15%;
   padding: 5px 5px 5px 10px;
 `;
-
 const ModalContainer = styled.View`
   width: 90%;
   background-color: #f8f8f8;
   border-radius: 10px;
   padding: 15px;
 `;
-
 const FooterWrapper = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   padding: 5px;
 `;
-
 const ButtonStyled = styled.TouchableHighlight`
   width: 150px;
   height: 30px;
@@ -159,5 +203,4 @@ const ButtonStyled = styled.TouchableHighlight`
   justify-content: center;
   border-radius: 5px;
 `;
-
 const ButtonText = styled.Text``;
