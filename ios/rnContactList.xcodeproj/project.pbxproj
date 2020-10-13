@@ -20,6 +20,7 @@
 		9B0B9C1A87382E8429971B79 /* libPods-rnContactList-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02B15A65354B3C125F5B07B7 /* libPods-rnContactList-tvOS.a */; };
 		9E715E8352C5968EE8B69DC2 /* libPods-rnContactList-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A4A034B9934DC80FC59A212 /* libPods-rnContactList-tvOSTests.a */; };
 		C78662F4FB4FF13D17AA6ACC /* libPods-rnContactList-rnContactListTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D2BA78DB2E28162C4FCB48B /* libPods-rnContactList-rnContactListTests.a */; };
+		DF121B352532C75A004F0DE0 /* Fonts in Resources */ = {isa = PBXBuildFile; fileRef = DF121B342532C75A004F0DE0 /* Fonts */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		B6FE37B6502BB68D16C2C549 /* Pods-rnContactList.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnContactList.debug.xcconfig"; path = "Target Support Files/Pods-rnContactList/Pods-rnContactList.debug.xcconfig"; sourceTree = "<group>"; };
 		BB6888E586D65166D4634F75 /* Pods-rnContactList-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnContactList-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-rnContactList-tvOSTests/Pods-rnContactList-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CF50E4018E4416A969B04AF4 /* Pods-rnContactList-rnContactListTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnContactList-rnContactListTests.release.xcconfig"; path = "Target Support Files/Pods-rnContactList-rnContactListTests/Pods-rnContactList-rnContactListTests.release.xcconfig"; sourceTree = "<group>"; };
+		DF121B342532C75A004F0DE0 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = "../node_modules/react-native-vector-icons/Fonts"; sourceTree = "<group>"; };
 		E52964C4DAAA45A14F01CDC2 /* Pods-rnContactList.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rnContactList.release.xcconfig"; path = "Target Support Files/Pods-rnContactList/Pods-rnContactList.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* rnContactList */ = {
 			isa = PBXGroup;
 			children = (
+				DF121B342532C75A004F0DE0 /* Fonts */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -194,7 +197,6 @@
 				BB6888E586D65166D4634F75 /* Pods-rnContactList-tvOSTests.debug.xcconfig */,
 				28777AA95B10F0B7F58E6DC0 /* Pods-rnContactList-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -340,6 +342,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DF121B352532C75A004F0DE0 /* Fonts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
@@ -375,7 +378,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
 		01541B85F0FB9C1A5F300083 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
